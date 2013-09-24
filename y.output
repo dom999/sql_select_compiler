@@ -1,0 +1,395 @@
+Grammar
+
+    0 $accept: program $end
+
+    1 program: function
+
+    2 function: function stmt
+    3         | /* empty */
+
+    4 stmt: SELECT cols FROM tables add
+
+    5 cols: WORD ',' cols
+    6     | WORD
+
+    7 tables: cols
+
+    8 add: WHERE expr add2
+    9    | GROUPBY cols add3
+   10    | ORDERBY cols
+   11    | /* empty */
+
+   12 add2: GROUPBY cols add3
+   13     | ORDERBY cols
+   14     | /* empty */
+
+   15 add3: ORDERBY cols
+   16     | /* empty */
+
+   17 expr: expr AND expr
+   18     | word '=' word
+
+   19 word: WORD
+   20     | '-' WORD
+
+
+Terminals, with rules where they appear
+
+$end (0) 0
+',' (44) 5
+'-' (45) 20
+'=' (61) 18
+error (256)
+WORD (258) 5 6 19 20
+SELECT (259) 4
+FROM (260) 4
+WHERE (261) 8
+GROUPBY (262) 9 12
+ORDERBY (263) 10 13 15
+AND (264) 17
+
+
+Nonterminals, with rules where they appear
+
+$accept (13)
+    on left: 0
+program (14)
+    on left: 1, on right: 0
+function (15)
+    on left: 2 3, on right: 1 2
+stmt (16)
+    on left: 4, on right: 2
+cols (17)
+    on left: 5 6, on right: 4 5 7 9 10 12 13 15
+tables (18)
+    on left: 7, on right: 4
+add (19)
+    on left: 8 9 10 11, on right: 4
+add2 (20)
+    on left: 12 13 14, on right: 8
+add3 (21)
+    on left: 15 16, on right: 9 12
+expr (22)
+    on left: 17 18, on right: 8 17
+word (23)
+    on left: 19 20, on right: 18
+
+
+state 0
+
+    0 $accept: . program $end
+
+    $default  reduce using rule 3 (function)
+
+    program   go to state 1
+    function  go to state 2
+
+
+state 1
+
+    0 $accept: program . $end
+
+    $end  shift, and go to state 3
+
+
+state 2
+
+    1 program: function .
+    2 function: function . stmt
+
+    SELECT  shift, and go to state 4
+
+    $default  reduce using rule 1 (program)
+
+    stmt  go to state 5
+
+
+state 3
+
+    0 $accept: program $end .
+
+    $default  accept
+
+
+state 4
+
+    4 stmt: SELECT . cols FROM tables add
+
+    WORD  shift, and go to state 6
+
+    cols  go to state 7
+
+
+state 5
+
+    2 function: function stmt .
+
+    $default  reduce using rule 2 (function)
+
+
+state 6
+
+    5 cols: WORD . ',' cols
+    6     | WORD .
+
+    ','  shift, and go to state 8
+
+    $default  reduce using rule 6 (cols)
+
+
+state 7
+
+    4 stmt: SELECT cols . FROM tables add
+
+    FROM  shift, and go to state 9
+
+
+state 8
+
+    5 cols: WORD ',' . cols
+
+    WORD  shift, and go to state 6
+
+    cols  go to state 10
+
+
+state 9
+
+    4 stmt: SELECT cols FROM . tables add
+
+    WORD  shift, and go to state 6
+
+    cols    go to state 11
+    tables  go to state 12
+
+
+state 10
+
+    5 cols: WORD ',' cols .
+
+    $default  reduce using rule 5 (cols)
+
+
+state 11
+
+    7 tables: cols .
+
+    $default  reduce using rule 7 (tables)
+
+
+state 12
+
+    4 stmt: SELECT cols FROM tables . add
+
+    WHERE    shift, and go to state 13
+    GROUPBY  shift, and go to state 14
+    ORDERBY  shift, and go to state 15
+
+    $default  reduce using rule 11 (add)
+
+    add  go to state 16
+
+
+state 13
+
+    8 add: WHERE . expr add2
+
+    WORD  shift, and go to state 17
+    '-'   shift, and go to state 18
+
+    expr  go to state 19
+    word  go to state 20
+
+
+state 14
+
+    9 add: GROUPBY . cols add3
+
+    WORD  shift, and go to state 6
+
+    cols  go to state 21
+
+
+state 15
+
+   10 add: ORDERBY . cols
+
+    WORD  shift, and go to state 6
+
+    cols  go to state 22
+
+
+state 16
+
+    4 stmt: SELECT cols FROM tables add .
+
+    $default  reduce using rule 4 (stmt)
+
+
+state 17
+
+   19 word: WORD .
+
+    $default  reduce using rule 19 (word)
+
+
+state 18
+
+   20 word: '-' . WORD
+
+    WORD  shift, and go to state 23
+
+
+state 19
+
+    8 add: WHERE expr . add2
+   17 expr: expr . AND expr
+
+    GROUPBY  shift, and go to state 24
+    ORDERBY  shift, and go to state 25
+    AND      shift, and go to state 26
+
+    $default  reduce using rule 14 (add2)
+
+    add2  go to state 27
+
+
+state 20
+
+   18 expr: word . '=' word
+
+    '='  shift, and go to state 28
+
+
+state 21
+
+    9 add: GROUPBY cols . add3
+
+    ORDERBY  shift, and go to state 29
+
+    $default  reduce using rule 16 (add3)
+
+    add3  go to state 30
+
+
+state 22
+
+   10 add: ORDERBY cols .
+
+    $default  reduce using rule 10 (add)
+
+
+state 23
+
+   20 word: '-' WORD .
+
+    $default  reduce using rule 20 (word)
+
+
+state 24
+
+   12 add2: GROUPBY . cols add3
+
+    WORD  shift, and go to state 6
+
+    cols  go to state 31
+
+
+state 25
+
+   13 add2: ORDERBY . cols
+
+    WORD  shift, and go to state 6
+
+    cols  go to state 32
+
+
+state 26
+
+   17 expr: expr AND . expr
+
+    WORD  shift, and go to state 17
+    '-'   shift, and go to state 18
+
+    expr  go to state 33
+    word  go to state 20
+
+
+state 27
+
+    8 add: WHERE expr add2 .
+
+    $default  reduce using rule 8 (add)
+
+
+state 28
+
+   18 expr: word '=' . word
+
+    WORD  shift, and go to state 17
+    '-'   shift, and go to state 18
+
+    word  go to state 34
+
+
+state 29
+
+   15 add3: ORDERBY . cols
+
+    WORD  shift, and go to state 6
+
+    cols  go to state 35
+
+
+state 30
+
+    9 add: GROUPBY cols add3 .
+
+    $default  reduce using rule 9 (add)
+
+
+state 31
+
+   12 add2: GROUPBY cols . add3
+
+    ORDERBY  shift, and go to state 29
+
+    $default  reduce using rule 16 (add3)
+
+    add3  go to state 36
+
+
+state 32
+
+   13 add2: ORDERBY cols .
+
+    $default  reduce using rule 13 (add2)
+
+
+state 33
+
+   17 expr: expr . AND expr
+   17     | expr AND expr .
+
+    $default  reduce using rule 17 (expr)
+
+
+state 34
+
+   18 expr: word '=' word .
+
+    $default  reduce using rule 18 (expr)
+
+
+state 35
+
+   15 add3: ORDERBY cols .
+
+    $default  reduce using rule 15 (add3)
+
+
+state 36
+
+   12 add2: GROUPBY cols add3 .
+
+    $default  reduce using rule 12 (add2)

@@ -1,7 +1,7 @@
 #ifndef SEL_HPP__
 #define SEL_HPP__
 
-typedef enum { SELECT_FROM,WHERE,GROUP,ORDER } commEnum;
+#define SIZEOFWORD 10
 typedef enum { typeCon,typeComm,typeOpr} nodeEnum;
 
 /* constants */
@@ -15,7 +15,7 @@ typedef struct {
 typedef struct {
    int oper; /* operator */
    int nops; /* number of operands */
-   struct nodeTypeTag *op[1]; /*operands(expandable)*/
+   struct nodeTypeTag *op[2]; /*operands(expandable)*/
 } oprNodeType;
 typedef struct nodeTypeTag {
    nodeEnum type ; /* type of node */
