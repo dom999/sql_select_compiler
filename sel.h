@@ -9,9 +9,11 @@ typedef struct {
    char value[10]; /*value of constant */
 } conNodeType;
 /* command identifiers */
+/*
 typedef struct {
    int i ; 
 } commNodeType;
+*/
 typedef struct {
    int oper; /* operator */
    int nops; /* number of operands */
