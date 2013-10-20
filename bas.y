@@ -7,7 +7,7 @@
 
 /* prototypes */
 nodeType *opr(int oper, int nops, ...);
-nodeType *comm(int value);
+//nodeType *comm(int value);
 nodeType *con(char * value);
 void freeNode(nodeType *p);
 int ex(nodeType *p);
@@ -79,7 +79,7 @@ nodeType *con(char * value){
    strcpy(p->con.value, value);
    return p;
 }
-
+/*
 nodeType *comm(int value) {
    nodeType *p;
    size_t nodeSize;
@@ -92,7 +92,7 @@ nodeType *comm(int value) {
    p->comm.i = value;
    return p;
 }
-
+*/
 nodeType *opr(int oper, int nops,...) {
    va_list ap;
    nodeType *p;
